@@ -7,6 +7,7 @@ from pydantic import Field, BaseModel
 class TaskModel(BaseModel):
     id: str = Field(default_factory=uuid.uuid4, alias="_id")
     name: str = Field(...)
+    image_url: str = Field(default=None, alias="image_url")
     completed: bool = False
     created_at: datetime = datetime.now()
     updated_at: datetime = datetime.now()
@@ -17,6 +18,7 @@ class TaskModel(BaseModel):
             "example": {
                 "name": "Learn FARM Intro",
                 "completed": False,
+                "image_url":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb-oKFFYpkJj1_6vGlDVlKFjuRIfcDIa4qhbFlDHA3TA&s",
             }
         }
 
@@ -24,6 +26,7 @@ class TaskModel(BaseModel):
 class UpdateTaskModel(BaseModel):
     name: Optional[str]
     completed: Optional[bool]
+    image_url: Optional[str]
     updated_at: datetime = datetime.now()
 
     class Config:
