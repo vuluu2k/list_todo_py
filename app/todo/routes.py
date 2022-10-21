@@ -1,14 +1,15 @@
 import pprint
-from fastapi import Body, Request, HTTPException, status, APIRouter
+from fastapi import Body, Request, HTTPException, status, APIRouter, Depends
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
 from .models import TaskModel, UpdateTaskModel
+from app.auth.jwt_bearer import JwtBearer
 
 router = APIRouter()
 
 
-@router.post("/", response_description="Add new task")
+@router.post("/", dependencies=[Depends(JwtBearer())], response_description="Add new task")
 async def create_task(request: Request, task: TaskModel = Body(...)):
     task = jsonable_encoder(task)
     new_task = await request.app.mongodb["tasks"].insert_one(task)
@@ -53,7 +54,7 @@ async def edit_task(id: str, request: Request, task: UpdateTaskModel = Body(...)
 
 
 @router.delete("/{id}", response_description="delete task with id")
-async def delete(id: str, request: Request):
+async def delete_task(id: str, request: Request):
     delete_task_result = await request.app.mongodb["tasks"].delete_one({"_id": id})
     if delete_task_result.deleted_count == 1:
         return JSONResponse(status_code=status.HTTP_200_OK,

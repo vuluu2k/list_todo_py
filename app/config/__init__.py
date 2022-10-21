@@ -1,9 +1,12 @@
 from pydantic import BaseSettings
-import dns
+from decouple import config
+
+DB_USERNAME = config("DB_USERNAME")
+DB_PASSWORD = config("DB_PASSWORD")
 
 
 class DatabaseSettings(BaseSettings):
-    DB_URL: str = "mongodb+srv://vuluu2k:1234@todos.rg4euf1.mongodb.net/?retryWrites=true"
+    DB_URL: str = f"mongodb+srv://{DB_USERNAME}:{DB_PASSWORD}@todos.rg4euf1.mongodb.net/?retryWrites=true"
     DB_NAME: str = "Todos"
 
 
