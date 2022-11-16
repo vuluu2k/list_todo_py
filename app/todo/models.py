@@ -32,7 +32,7 @@ class UpdateTaskModel(BaseModel):
     completed: Optional[bool]
     image_url: Optional[str]
     content: Optional[str]
-    group: Optional[str]
+    group_id: Optional[str]
     updated_at: datetime = datetime.now()
 
     class Config:
